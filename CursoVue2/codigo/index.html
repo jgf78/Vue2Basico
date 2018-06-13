@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<title>Curso de VueJS 2</title>
+		<style>
+			.like{
+				background: green;
+				color:white;
+				padding: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Segunda instancia-->
+		<div id="app">
+			{{texto}}
+		</div>
+		<!-- Tercera instancia-->
+		<div id="tercera">
+			{{prueba}}
+		</div>
+		<main>
+			<hr/>
+			<!-- Componentes dinámicos -->
+			<button @click="elegido = 'articulos'">Cargar articulos</button>
+			<button @click="elegido = 'padre'">Cargar padre</button>
+			<button @click="elegido = 'hijo'">Cargar hijo</button>
+			<component :is="elegido"> </component>
+			<hr/>
+			<!-- Llamada entre componentes-->
+			<padre></padre>
+			<hr/>
+			<!-- Llamada a componente -->
+			<fruits :objeto="superfruta" inline-template>
+				<div>
+					<h1> COMPONENTE frutas</h1>
+					<h3>{{objeto.nombre}}</h3>
+				</div>
+			</fruits>
+			<hr/>
+			<!-- Llamada a componente -->
+			<articulos></articulos>
+			<!-- Se pueden repetir las veces que se quieran
+			<articulos></articulos>
+			<articulos></articulos>
+			-->
+			<hr/>
+			<!-- listado por peticion Ajax-->
+			<h1>Listado por Ajax</h1>
+			<ol v-if="posts">
+				<li v-for="(post, index) in posts">{{post.title}}</li>
+			</ol>
+			<span v-else>Cargando listado por Ajax...</span>
+			<hr/>
+			<!-- Interpolacion / imprimir el contenido de una variable del modelo/instancia vue -->
+			<h1>{{texto}}</h1>
+			<h2 v-text="texto"> </h2>
+			<hr/>
+
+			<!-- 2 way data binding / enlace de datos bidireccional y la reactividad-->
+			<input type="text" v-model="nombre">
+			<p>El nombre es: {{nombre}}</p>
+			<hr/>
+			<!--<pre>
+				{{$data}}
+			</pre>-->
+
+			<!-- Directivas condicionales v-if -->
+			Nota: <input type="text" v-model="nota">
+			<strong v-if="nota && nota>=5 && nota <=99">Tu nota es mayor de 5, has aprobado</strong>
+			<strong v-else-if="nota && nota==100">Notaza, has aprobado</strong>
+			<span v-else>Has suspendido</span>
+			<hr/>
+
+			<!-- Directiva de bucles v-for -->
+			<h1>Listado de peliculas (array)</h1>
+			<ol>
+				<li v-for="pelicula in peliculas">{{pelicula}}	</li>
+			</ol>
+
+			<h1>Listado de frutas (array de objetos)</h1>
+			<ul>
+				<li @click="marcar(index)" v-bind:class="{like:index == confirmado}" v-for="(fruta, index) in frutas">
+					{{index}} - {{fruta.nombre}} - {{fruta.temporada}}	
+				</li>
+			</ul>
+
+			<h1>Listado de elementos de superfruta (objeto)</h1>
+			<ul>
+				<li v-for="(value, key, index) in superfruta">
+					{{index}} - {{key}} - {{value}}	
+				</li>
+			</ul>
+			<hr/>
+
+			<!-- Eventos -->
+			<h1>Listado de peliculas (eventos)</h1>
+			<ol>
+				<li v-for="(pelicula, index) in peliculas">{{pelicula}}	- <button @click="borrarPelicula(index)">Eliminar pelicula</button></li>
+			</ol>
+			<form @submit.prevent="crearPelicula()">
+				<input type="text" v-model="peliculaNueva">
+				<input type="submit" value="Guardar pelicula">	
+			</form>
+			<!--<button v-on:click="crearPelicula()">Crear pelicula</button>
+			<button @click="borrarPelicula()">Eliminar pelicula</button>
+			-->
+			<hr/>
+
+			<!-- Propiedades computadas -->
+			<h1>{{nombre+' '+apellido}}</h1>
+			<h1>{{nombreYapellidos}}</h1>
+			<h1>Listado de peliculas ordenado</h1>
+			<ol>
+				<li v-for="(pelicula, index) in peliculasOrdenadas">
+					{{pelicula | mayusculas}}
+				</li>
+			</ol>
+			<hr/>
+
+			<!--Filtros -->
+			<h1>Listado de frutas ordenado (filtro)</h1>
+			<input type="search" v-model="busqueda" placeholder="buscar fruta">
+			<ol>
+				<li v-for="(fruta) in buscarFruta">
+					{{fruta.nombre | mayusculas}}
+				</li>
+			</ol>
+			<hr/>
+
+		</main>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="//unpkg.com/element-ui@2.4.1/lib/theme-chalk/index.css"></script>
+		<script src="js/main.js"></script>
+	</body>	
+</html>
